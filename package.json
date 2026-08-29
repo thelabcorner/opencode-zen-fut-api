@@ -1,0 +1,43 @@
+{
+  "name": "opencode-zen-fut-api",
+  "version": "0.1.0",
+  "description": "Evidence-driven free usage tracker for OpenCode Zen free models",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "bin": {
+    "zen-fut": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run clean --silent && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node -e \"require('fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test .test-dist/test/*.test.js && node -e \"require('fs').rmSync('.test-dist',{recursive:true,force:true})\"",
+    "check": "npm run typecheck && npm test && npm run build",
+    "dev": "npm run build && node dist/cli.js usage",
+    "deploy": "wrangler deploy",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true}); require('fs').rmSync('.test-dist',{recursive:true,force:true})\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.34.0"
+  }
+}
